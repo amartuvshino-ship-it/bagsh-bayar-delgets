@@ -171,6 +171,18 @@ ul.list.big li{font-size:40px}
 .nomgrid.n2 .card .ps{font-size:26px}
 .nomgrid.n2 .card .sc{font-size:22px}
 
+/* «Шилдэг тэнхим» — хамт олны өргөн зураг */
+.ph.wide{width:404px;height:227px;border-radius:18px;
+  transition:width .9s cubic-bezier(.2,.85,.25,1), height .9s cubic-bezier(.2,.85,.25,1),
+             box-shadow .9s ease}
+.ph.wide img{object-position:50% 46%}
+.card.unit{width:440px}
+.card.unit .nm{font-size:31px}
+.card.winner .ph.wide{width:720px;height:405px;border-radius:26px;
+  box-shadow:0 0 0 10px rgba(255,221,0,.09), 0 0 84px rgba(255,221,0,.36)}
+.card.unit .rays{width:1180px;height:1180px}
+.card.unit.winner .nm{font-size:62px}
+
 /* «Шилдэг сургууль» — зураггүй, хүрээтэй самбар */
 .card.sch{width:520px;padding:28px 24px;border:1px solid rgba(255,221,0,.30);border-radius:20px;
   background:linear-gradient(180deg, rgba(0,62,37,.38), rgba(0,40,23,.22));
@@ -572,16 +584,17 @@ ul.list.big li{font-size:40px}
     AWARDS.forEach(function(a){
       var cards='';
       a.nom.forEach(function(o){
-        if(a.kind==='school'){                     // «Шилдэг сургууль» — зураггүй
+        if(a.kind==='school'){                     // сургууль — зураггүй, самбартай
           cards += '<div class="card sch"><div class="schwrap">'+
             '<div class="rays"></div><div class="crown">★</div>'+
             '<div class="nm'+(o.n?'':' empty')+'">'+esc(o.n||'Нэрийг оруулна')+'</div>'+
             '</div></div>';
           return;
         }
-        cards += '<div class="card">'+
+        var wide = a.kind==='unit' ? ' wide' : '';   // хамт олны зураг — өргөн
+        cards += '<div class="card'+(wide?' unit':'')+'">'+
           '<div class="phwrap"><div class="rays"></div><div class="crown">★</div>'+
-            photoBox(o, a.kind)+
+            photoBox(o, a.kind, wide)+
           '</div>'+
           '<div class="nm'+(o.n?'':' empty')+'">'+esc(o.n||'Нэрийг оруулна')+'</div>'+
           (o.d ? '<div class="dg">'+esc(o.d)+'</div>' : '')+
