@@ -171,6 +171,17 @@ ul.list.big li{font-size:40px}
 .nomgrid.n2 .card .ps{font-size:26px}
 .nomgrid.n2 .card .sc{font-size:22px}
 
+/* «Шилдэг сургууль» — зураггүй, хүрээтэй самбар */
+.card.sch{width:520px;padding:28px 24px;border:1px solid rgba(255,221,0,.30);border-radius:20px;
+  background:linear-gradient(180deg, rgba(0,62,37,.38), rgba(0,40,23,.22));
+  transition:padding .9s cubic-bezier(.2,.85,.25,1), border-color .9s ease, box-shadow .9s ease}
+.schwrap{position:relative;display:grid;place-items:center}
+.card.sch .nm{font-size:44px;line-height:1.24;position:relative;z-index:1}
+.card.sch .rays{width:820px;height:820px;z-index:0}
+.nomgrid.revealed .card.sch.winner{width:1140px;padding:60px 44px;border-color:rgba(255,221,0,.62);
+  box-shadow:0 0 96px rgba(255,221,0,.20), inset 0 0 70px rgba(255,221,0,.06)}
+.card.sch.winner .nm{font-size:76px}
+
 /* туяа ба титэм — зөвхөн шилдэг дээр */
 .rays{position:absolute;width:720px;height:720px;border-radius:50%;pointer-events:none;opacity:0;
   background:repeating-conic-gradient(rgba(255,221,0,.17) 0deg 3.4deg, transparent 3.4deg 12deg);
@@ -561,6 +572,13 @@ ul.list.big li{font-size:40px}
     AWARDS.forEach(function(a){
       var cards='';
       a.nom.forEach(function(o){
+        if(a.kind==='school'){                     // «Шилдэг сургууль» — зураггүй
+          cards += '<div class="card sch"><div class="schwrap">'+
+            '<div class="rays"></div><div class="crown">★</div>'+
+            '<div class="nm'+(o.n?'':' empty')+'">'+esc(o.n||'Нэрийг оруулна')+'</div>'+
+            '</div></div>';
+          return;
+        }
         cards += '<div class="card">'+
           '<div class="phwrap"><div class="rays"></div><div class="crown">★</div>'+
             photoBox(o, a.kind)+
