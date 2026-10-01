@@ -337,6 +337,43 @@ ul.list.big li{font-size:40px}
   letter-spacing:.14em;color:rgba(255,248,221,.55);background:rgba(0,40,23,.75);border:1px solid rgba(255,221,0,.3);
   padding:7px 14px;border-radius:30px;transition:opacity .6s}
 .help.gone{opacity:0}
+/* ---------- удирдлагын цонх (?ctrl) ---------- */
+body.ctrl{overflow:auto;background:#07140d}
+body.ctrl #fit, body.ctrl .help{display:none}
+#cpanel{display:none}
+body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
+  font-family:var(--sans);color:var(--cream)}
+#cpanel header{padding:16px 20px 13px;border-bottom:1px solid rgba(255,221,0,.26);
+  background:linear-gradient(180deg,rgba(0,52,31,.9),rgba(0,32,19,.9))}
+#cpanel header b{display:block;font-size:15px;letter-spacing:.22em;color:var(--yellow)}
+#cpanel header span{display:block;font-size:12px;letter-spacing:.1em;margin-top:5px;
+  color:rgba(255,248,221,.45)}
+#cpanel .clist{flex:1;overflow-y:auto;padding:8px}
+.crow{display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
+  background:none;border:0;border-left:3px solid transparent;border-radius:9px;
+  padding:11px 12px;color:rgba(255,248,221,.80);font:600 16px/1.3 var(--sans)}
+.crow:hover{background:rgba(255,221,0,.10)}
+.crow i{flex:none;width:26px;font-style:normal;font-size:12px;text-align:right;
+  color:rgba(255,248,221,.32)}
+.crow u{flex:none;width:46px;text-decoration:none;font-size:13px;color:var(--gold-deep);
+  font-variant-numeric:tabular-nums}
+.crow.lv1{padding-left:34px;font-size:15px;color:rgba(191,217,198,.78)}
+.crow.lv2{padding-left:52px;font-size:14px;color:rgba(255,221,0,.60)}
+.crow.now{background:rgba(255,221,0,.17);color:#fff;border-left-color:var(--yellow)}
+.crow.now u{color:var(--yellow)}
+#cpanel .cbar{display:flex;gap:7px;padding:11px;border-top:1px solid rgba(255,221,0,.26);
+  background:rgba(0,30,18,.9)}
+#cpanel .cbar button{flex:1;cursor:pointer;background:rgba(0,60,36,.6);
+  border:1px solid rgba(255,221,0,.42);border-radius:11px;color:var(--yellow);
+  font:700 14px/1 var(--sans);letter-spacing:.06em;padding:15px 6px}
+#cpanel .cbar button:hover{background:rgba(255,221,0,.16)}
+#cpanel .cbar2{border-top:0;padding-top:0}
+#cpanel .cbar2 button{font-size:12.5px;padding:12px 5px;background:rgba(0,46,28,.5);
+  border-color:rgba(255,221,0,.26);color:rgba(255,229,107,.9)}
+#cpanel .chint{padding:0 12px 12px;font-size:11.5px;line-height:1.5;
+  color:rgba(255,248,221,.40);background:rgba(0,30,18,.9)}
+#cpanel .chint b{color:rgba(255,221,0,.8)}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -549,13 +586,37 @@ ul.list.big li{font-size:40px}
 <script>
 (function(){
   /* ---- стейжийг дэлгэцэд тааруулах ---- */
+  /* ===== Удирдлагын цонх (presenter mode) =====
+     index.html?ctrl  → зөвхөн удирдлагын жагсаалт гарна.
+     Том дэлгэц дээрх цонхтой BroadcastChannel/localStorage-ээр холбогдоно.   */
+  var CTRL = /[?&]ctrl\b/.test(location.search);
+  if(CTRL) document.body.classList.add('ctrl');
+  var chan = (function(){ try{ return new BroadcastChannel('hbd-delgets'); }catch(e){ return null; } })();
+  var seenId={}, seenN=0;
+  function send(m){
+    m.id = Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+    if(chan) chan.postMessage(m);                       // ижил төхөөрөмжийн хоёр цонх
+    try{ localStorage.setItem('hbd-cmd', JSON.stringify(m)); }catch(e){}   // нөөц суваг
+  }
+  function onCmd(fn){
+    function h(m){                                      // хоёр сувгаар давхар ирэхийг шүүнэ
+      if(!m || !m.id || seenId[m.id]) return;
+      seenId[m.id]=1; if(++seenN>400){ seenId={}; seenN=0; }
+      fn(m);
+    }
+    if(chan) chan.onmessage=function(e){ h(e.data); };
+    addEventListener('storage', function(e){
+      if(e.key==='hbd-cmd' && e.newValue){ try{ h(JSON.parse(e.newValue)); }catch(err){} }
+    });
+  }
+
   var stage=document.getElementById('stage');
   var ORN=document.querySelector('.orn').getAttribute('src');
   function fit(){
     var s=Math.min(innerWidth/1920, innerHeight/1080);
     stage.style.transform='scale('+s+')';
   }
-  fit(); addEventListener('resize', fit);
+  if(!CTRL){ fit(); addEventListener('resize', fit); }
 
   /* ===================== ОНЫ ШИЛДЭГҮҮД — ӨГӨГДӨЛ =====================
      Нэр дэвшигч бүрийн мэдээллийг ЗӨВХӨН энд бөглөнө. Слайд автоматаар үүснэ.
@@ -577,13 +638,13 @@ ul.list.big li{font-size:40px}
           ХШУС :'Хэрэглээний шинжлэх ухааны сургууль' };
 
   var AWARDS=[
-    { cat:'ЗАЛУУ БАГШ', m:'Залуу багш', kind:'person', win:1,
+    { cat:'ЗАЛУУ БАГШ', m:'Залуу багш', kind:'person', win:2,
       nom:[
         {n:'Г.Нямдорж',      d:'магистр', p:'Цахилгаан хангамж, электроникийн ахлах багш', s:S.ИТС,  img:''},
         {n:'Г.Бямбажаргал',  d:'магистр', p:'Маркетингийн тэнхимийн багш',                 s:S.ЭЗБС, img:''}
       ] },
 
-    { cat:'СУДЛААЧ БАГШ', m:'Судлаач багш', kind:'person', win:1,
+    { cat:'СУДЛААЧ БАГШ', m:'Судлаач багш', kind:'person', win:6,
       nom:[
         {n:'Ц.Хатанбаатар',   d:'доктор, дэд профессор', p:'Дотор өвчин, эм судлалын тэнхимийн дэд профессор',                s:S.МЭС,   img:''},
         {n:'Д.Дашмаа',        d:'доктор, дэд профессор', p:'Бүтээгдэхүүн судлал, хяналт үнэлгээний тэнхимийн дэд профессор',  s:S.МААБС, img:''},
@@ -593,7 +654,7 @@ ul.list.big li{font-size:40px}
         {n:'С.Отгонпүрэв',    d:'доктор, дэд профессор', p:'Химийн тэнхимийн багш, сургуулийн Эрдэмтэн нарийн бичгийн дарга', s:S.ХШУС,  img:''}
       ] },
 
-    { cat:'СУРГАН ХҮМҮҮЖҮҮЛЭГЧ БАГШ', m:'Сурган хүмүүжүүлэгч багш', kind:'person', win:1,
+    { cat:'СУРГАН ХҮМҮҮЖҮҮЛЭГЧ БАГШ', m:'Сурган хүмүүжүүлэгч багш', kind:'person', win:5,
       nom:[
         {n:'П.Ням-Осор',      d:'доктор, дэд профессор', p:'Мал эмнэлгийн нийтийн эрүүл мэндийн тэнхимийн эрхлэгч',            s:S.МЭС,   img:''},
         {n:'Ж.Рэнцэнханд',    d:'доктор',                p:'Мал аж ахуй, технологийн тэнхимийн дэд профессор',                 s:S.МААБС, img:''},
@@ -603,7 +664,7 @@ ul.list.big li{font-size:40px}
         {n:'Т.Алтанзаяа',     d:'доктор, дэд профессор', p:'Биологи, аялал жуулчлалын тэнхимийн профессор',                    s:S.ХШУС,  img:''}
       ] },
 
-    { cat:'ТЭНХИМ', m:'Тэнхим', kind:'unit', win:1,
+    { cat:'ТЭНХИМ', m:'Тэнхим', kind:'unit', win:2,
       nom:[
         {n:'Мал эмнэлгийн нийтийн эрүүл мэндийн тэнхим',  d:'', p:'', s:S.МЭС,   img:''},
         {n:'Бэлчээр тэжээллэгийн тэнхим',                 d:'', p:'', s:S.МААБС, img:''},
@@ -810,20 +871,44 @@ ul.list.big li{font-size:40px}
                     + (cur.dataset.m || cur.dataset.t || '');
     items.forEach(function(b,n){ b.classList.toggle('now', n===i); });
     if(stage.classList.contains('menu-on')) items[i].scrollIntoView({block:'nearest'});
-    if(moved){ playWipe(); if(cur.dataset.ident) playIdent(); }
+    if(moved && !CTRL){ playWipe(); if(cur.dataset.ident) playIdent(); }
+    if(!CTRL) send({cur:i, light:stage.dataset.light||''});
+    if(CTRL) markCtrl(i);
   }
   function next(){ show(i+1); } function prev(){ show(i-1); }
+  function cycleLight(){
+    var L=stage.dataset.light||'';
+    stage.dataset.light = L==='' ? 'top' : (L==='top' ? 'bottom' : '');
+    send({cur:i, light:stage.dataset.light});
+  }
+  function goFull(){ var d=document.documentElement;
+    if(document.fullscreenElement) document.exitFullscreen();
+    else if(d.requestFullscreen) d.requestFullscreen(); }
+
+  /* ---- тоо шивж слайд руу үсрэх: 14 → 14-р слайд ---- */
+  var numBuf='', numTm=0;
+  function showNum(){ tbR.textContent='→ '+numBuf; }
+  function jumpNum(){
+    clearTimeout(numTm);
+    var k=parseInt(numBuf,10); numBuf='';
+    if(k>0 && k<=slides.length) show(k-1); else show(i);   // буруу бол сэргээнэ
+  }
   document.addEventListener('keydown', function(e){
     var c=e.code;                               // кирилл байрлалд e.key өөр утга буцаана
     if(c==='ArrowRight'||c==='Space'||c==='PageDown'||c==='Enter'){ e.preventDefault(); next(); }
     else if(c==='ArrowLeft'||c==='PageUp'||c==='Backspace'){ e.preventDefault(); prev(); }
     else if(c==='Home'){ show(0); } else if(c==='End'){ show(slides.length-1); }
-    else if(c==='KeyF'){ var d=document.documentElement;
-      if(document.fullscreenElement) document.exitFullscreen(); else if(d.requestFullscreen) d.requestFullscreen(); }
+    else if(c==='KeyF'){ goFull(); }
     else if(c==='KeyM'){ menu(!stage.classList.contains('menu-on')); }
     else if(c==='KeyI'){ playIdent(); }
-    else if(c==='KeyL'){ var L=stage.dataset.light||'';
-      stage.dataset.light = L==='' ? 'top' : (L==='top' ? 'bottom' : ''); }
+    else if(c==='KeyP'){ var u=location.href.split('#')[0];
+      window.open(u + (u.indexOf('?')<0?'?':'&') + 'ctrl', 'hbdctrl',
+        'width=560,height=980,menubar=no,toolbar=no'); }
+    else if(/^(Digit|Numpad)[0-9]$/.test(c)){ e.preventDefault();
+      numBuf += c.replace(/^(Digit|Numpad)/,''); showNum();
+      clearTimeout(numTm); numTm=setTimeout(jumpNum, 1100); }
+    else if(c==='NumpadEnter'){ e.preventDefault(); jumpNum(); }
+    else if(c==='KeyL'){ cycleLight(); }
     else if(c==='ArrowDown'){ e.preventDefault(); stepTo(slides[i], (+slides[i].dataset.step||0)+1); }
     else if(c==='ArrowUp'){   e.preventDefault(); stepTo(slides[i], (+slides[i].dataset.step||0)-1); }
     else if(c==='KeyR'){ var sc=slides[i];
@@ -853,7 +938,7 @@ ul.list.big li{font-size:40px}
       len: 230+Math.random()*210, w: 1.5+Math.random()*1.1,
       t:0, T: 150+Math.random()*70 });
   }
-  (function tick(){
+  if(!CTRL)(function tick(){
     cx.clearRect(0,0,1920,1080);
     /* алтан тоос */
     for(var k=0;k<P.length;k++){ var p=P[k]; p.x+=p.vx; p.y+=p.vy; p.tw+=.04;
@@ -889,31 +974,44 @@ ul.list.big li{font-size:40px}
 
   /* ---- «Зочдыг угтах» слайдын ард хөвөх сургуулиудын нэр ---- */
   var NAMES=["Д.Туул", "Б.Эрдэнэбат", "Б.Ганбат", "Ж.Отгонжаргал", "М.Эрдэнэбаяр", "Б.Хандсүрэн", "Д.Оргил", "Д.Жавзмаа", "Д.Лхагвабат", "З.Нямцэрэн", "Э.Бумбаяр", "Д.Санжаасүрэн", "Ч.Баасансүрэн", "Г.Номубилэг", "Ч.Баярчимэг", "Б.Ганболор", "Л.Энхжаргал", "Д.Батчимэг", "Б.Мөнх-Эрдэнэ", "П.Ариунсүрэн", "Г.Балжинням", "Ц.Нансалмаа", "Е.Батболор", "Б.Халиун", "Б.Мөнхжаргал", "Г.Лхамжав", "Э.Батзаяа", "А.Батмөнх", "В.Энхчимэг", "О.Батсуурь", "Б.Хулан", "А.Буянбаатар", "Л.Батцэнгэл", "Ж.Оюунгэрэл", "Б.Отгонтөгс", "Ц.Нарангэрэл", "Г.Эрдэмбилэг", "Ө.Амар", "Ч.Баасанжаргал", "П.Энхцэцэг", "И.Хатанбаатар", "С.Алданыш", "Т.Болор-Эрдэнэ", "Ж.Ундармаа", "Ш.Эрдэнэбилэг", "Я.Эрдэнэсүрэн", "С.Долгорсүрэн", "Ш.Оюунтуяа", "Г.Өлзийбадрах", "А.Энхзаяа", "Т.Ариунболд", "М.Нарангэрэл", "Б.Буянчимэг", "Ж.Анхбаяр", "Б.Цолмон", "З.Эрдэнэ", "Ч.Доржпагма", "Т.Шинэбаяр", "Л.Загдсүрэн", "М.Мөнгөнзул", "Б.Өнөрцэрэн", "Н.Насанцэцэг", "Г.Энхманлай", "Г.Золзаяа", "Д.Нандинцэцэг", "А.Лхамсүрэн", "С.Бямбацогт", "Ш.Мөнхпүрэв", "М.Анхбаяр", "М.Баярхүү", "М.Сайханчимэг", "П.Ням-Осор", "Т.Байгальцэцэг", "П.Эрдэнэтогтох", "Г.Бадамцэцэг", "Ж.Сувдаа", "Д.Болормаа", "Р.Батчимэг", "Э.Төмөртогтох", "С.Одонгэрэл", "Г.Мэндбаатар", "Д.Мөнхтуяа", "Г.Отгонтуяа", "С.Эрдэнэ-Очир", "М.Анхтуяа", "М.Баясах", "М.Эрдэнэтуяа", "Д.Батзаяа", "Б.Одончимэг", "З.Ядмаа", "Б.Оюунбилэг", "Г.Нямдорж", "Э.Баянжаргал", "А.Даваажаргал", "Б.Мөнхбат", "О.Оюунтуяа", "Д.Найдандорж", "Л.Должинхорол", "А.Оюунболор", "Л.Амарсанаа", "Б.Уранчимэг", "Б.Баянсүрэн", "Ж.Шинэхүү", "О.Одбаяр", "Л.Буянжаргал", "Ц.Ганбаатар", "Н.Даваасүрэн", "А.Гэрэлмаа", "Ё.Жажинжав", "С.Отгонбулаг", "М.Довчинванчиг", "А.Баянзул", "Д.Дарханбаяр", "Б.Долгорцэнд", "М.Эрдэнэсувд", "Г.Хишигзаяа", "Н.Наранхүү", "А.Билгүүн", "Г.Энх-Амгалан", "Ө.Нарангарав", "Б.Шүрэнцэцэг", "М.Батхуяг", "Б.Өсөхбаяр", "Г.Баттулга", "М.Энхбилэг", "Э.Цасчихэр", "Б.Баярмаа", "Д.Насандулам", "Д.Гүрбазар", "Д.Шинэбаяр", "Д.Ариунцэцэг", "Ж.Золжаргал", "Н.Энхзул", "Т.Баяржаргал", "А.Хунцэцэг", "Э.Анхбаяр", "О.Жавхлан", "О.Санжидсүрэн", "Ц.Гантулга", "Г.Хүслэн", "Н.Бат-Эрдэнэ", "Б.Отгонхуяг", "А.Базарсад", "А.Батсуурь", "Э.Эрхэмбаяр", "Б.Бүжинлхам", "З.Ундрах", "О.Балжин", "Ш.Доржпагма", "М.Мөнхзул", "З.Нэрмаа", "И.Батхишиг", "А.Мөнхбаяр", "П.Ганхуяг", "И.Цэцэгбат", "Н.Батжаргал", "Ш.Түмэнжаргал", "Д.Кадирбек", "Б.Минжмаа", "Х.Бумдэлгэр", "Б.Жавхлантөгс", "Ц.Баярмаа", "Н.Солонго", "З.Байгалмаа", "Г.Батзаяа", "Б.Болдбаатар", "Д.Мягмарсүрэн", "Э.Очбаяр", "Т.Насанжаргал", "Б.Энхжаргал", "Т.Гэрэлхүү", "Ч.Амармэнд", "Д.Алтантуяа", "Л.Дэлгэрмаа", "Ц.Чулуунцэцэг", "Ц.Амаржаргал", "С.Баттуяа", "Э.Бадам", "С.Отгон-Эрдэнэ", "С.Лхагвасүрэн", "П.Мөнхтуяа", "А.Бэлгүүн", "Д.Гэрэлтуяа", "Д.Уранхайч", "С.Баасансүрэн", "Б.Цэндсүрэн", "Ж.Түшигмаа", "А.Амаржаргал", "Ц.Бурмаа", "Я.Нансалмаа", "Б.Бадамсүрэн", "Ж.Амгаланзул", "Ж.Мөнгөн", "Г.Гэрэлцэцэг", "Ж.Мөнхбат", "Ж.Удаахбаяр", "З.Ундармаа", "Д.Золзаяа", "Л.Уранбилэг", "Б.Балжинням", "Б.Дашням", "Б.Нарангэрэл", "Б.Буянзаяа", "Х.Мөнх-Ирээдүй", "Б.Баасансүх", "С.Отгонжаргал", "Ж.Цэрэндаваа", "Л.Баярцэцэг", "Б.Ариунболд", "О.Булгантамир", "М.Оюунчимэг", "С.Амаржаргал", "Х.Ариунсанаа", "Н.Нямаа", "Э.Баяржаргал", "Д.Ганболд", "А.Энхжаргал", "С.Гэрэлт-Од", "Д.Баатархүү", "Г.Ариунжаргал", "Ч.Хоролмаа", "О.Дуламрагчаа", "Г.Түмэндэмбэрэл", "М.Батбаатар", "М.Мөнхбат", "О.Амартүвшин", "А.Гомбожав", "Н.Чинзориг", "О.Энхбаатар", "Ю.Ариунтунгалаг", "С.Алтанцэцэг", "Ж.Сарангэрэл", "З.Чинзориг", "Б.Алтанзул", "П.Зоригт", "М.Цогбадрах", "Д.Дашмаа", "Ц.Амартүвшин", "П.Пүрэвсүрэн", "Б.Отгонбаяр", "З.Эрдэнэчимэг", "Г.Мөнгөн-Од", "Ж.Эрдэнэчандмань", "Д.Лхагвадорж", "Т.Барийсүрэн", "П.Болормаа", "Б.Энхтуяа", "Д.Цогбаяр", "З.Сайнжаргал", "О.Отгондэлгэр", "Э.Энхжаргал", "Ж.Рэнцэнханд", "Ж.Бямбажав", "Я.Гансүх", "Д.Дэлгэрмөрөн", "Ш.Оюун-Эрдэнэ", "Ч.Ууганбаяр", "Т.Байгал-Амар", "Д.Нямдаваа", "Д.Намуунжаргал", "Д.Эрдэнэбаатар", "З.Цэрэнханд", "Н.Нямсүрэн", "Б.Ундармаа", "А.Алтанзул", "Л.Даваа", "Э.Ууганцэцэг", "Б.Сэр-Од", "Г.Билгүүн", "О.Энхтуяа", "С.Амгаабазар", "Ч.Хулан", "Б.Батзориг", "А.Отгонжаргал", "Д.Бямбацогт", "У.Норжмаа", "Г.Нямсүрэн", "Л.Отгонжаргал", "Ө.Баярсайхан", "Т.Нямаа", "А.Долгорсүрэн", "Г.Нарангэрэл", "Л.Норовсүрэн", "Ц.Чулуунбаатар", "Ц.Лхагвасүрэн", "Б.Бүжидмаа", "Ч.Батжаргал", "О.Бүрэнжаргал", "Г.Болор-Эрдэнэ", "Г.Баянмөнх", "Т.Уянгаа", "А.Гоомарал", "Д.Бямбасүрэн", "М.Өлзийсүрэн", "Б.Бат-Эрдэнэ", "О.Халиунаа", "Ц.Цэрэндулам", "О.Номин-Эрдэнэ", "Б.Янжиндулам", "Д.Отгондаваа", "Г.Буманжаргал", "Т.Эрдэнэчулуун", "Б.Чимэдцэрэн", "Д.Уранчимэг", "М.Батцэнгэл", "Б.Насанбат", "И.Мягмаржав", "Б.Одгэрэл", "Б.Долгормаа", "Б.Итгэл", "Д.Мөнгөнцэцэг", "Б.Төрболд", "Б.Тайванжаргал", "Т.Балжинням", "Б.Оюунцэцэг", "Д.Энхзул", "Е.Меруерт", "Ц.Сүхтулга", "Г.Хишигмаа", "Б.Дагважамц", "О.Лхагварагчаа", "Т.Балдан", "Б.Эрхэмбаяр", "Н.Пагамдулам", "Л.Лхагвасүрэн", "Ц.Цэрэндаваа", "О.Мөнхжаргал", "Ж.Мөнхтөр", "Д.Далхжав", "Ё.Чанцалдаарий", "А.Энхтуяа", "С.Оюунсувд", "М.Золзаяа", "Ү.Хадбаатар", "Х.Баяржаргал", "Г.Биндэръяа", "Б.Буянтунгалаг", "С.Эрдэнэчимэг", "Ц.Халиунаа", "Д.Номиндалай", "М.Оргилболд", "Т.Азжаргал", "В.Гантулга", "Г.Нэмэхжаргал", "Ж.Баттулга", "М.Сайнзаяа", "Д.Эрдэнэсувд", "Т.Тунгалагмаа", "Ц.Дамаажав", "Б.Энхболор", "А.Урантуяа", "А.Эрдэнэчимэг", "Г.Ганзориг", "Д.Орхонтуул", "Д.Уранбайгал", "Х.Оюунболд", "Б.Дагиннас", "Б.Болдбаяр", "Р.Байгалмаа", "Т.Лхагвасүрэн", "Ч.Лхамсүрэн", "О.Отгонцэцэг", "Г.Энхбаяр", "Х.Цэнгэлтуяа", "М.Нямсүрэн", "С.Бүрэнжаргал", "И.Баярбат", "Д.Хандсүрэн", "С.Түмэнбаяр", "С.Хандсүрэн", "Б.Баярцэцэг", "П.Буяннэмэх", "М.Хишигжаргал", "Ц.Өлзийбаатар", "Ц.Болормаа", "Б.Сандагдорж", "Ч.Жавхланбаяр", "Б.Болормаа", "Д.Амаржаргал", "Б.Алтанчимэг", "Г.Даваасүрэн", "Ч.Оюунцэцэг", "Г.Ганчимэг", "П.Нямсүрэн", "Ц.Ариунтунгалаг", "Х.Мөнхтүвшин", "С.Нармандах", "Ц.Цэндсүрэн", "Г.Оюун-Эрдэнэ", "Ч.Цолмон", "Т.Энхзаяа", "М.Лхагвасүрэн", "Г.Мөнхбат", "Ц.Нямлхагва", "Д.Алимаа", "Д.Гүнжиймаа", "Ч.Даваасүрэн", "Ө.Энхмаа", "Г.Мядагмаа", "Р.Ундармаа", "П.Мөнгөнцэцэг", "Л.Мөнхжаргал", "Б.Эрдэнэтуяа", "Т.Уламбаяр", "Т.Тимур", "Н.Алтанхундага", "А.Алтанчимэг", "Ж.Эрдэнэдалай", "Л.Бямбасүрэн", "Т.Энхбат", "Г.Батцэцэг", "Б.Дагиймаа", "Ү.Тужхүү", "Б.Мөнхцацрал", "Б.Гантөмөр", "Т.Энхтуяа", "Б.Батбилэг", "Н.Цэгмид", "Г.Ононтуул", "Д.Банзрагч", "Д.Баярмаа", "Б.Баяртогтох", "Х.Бүрэнжаргал", "Э.Молор-Эрдэнэ", "Д.Батцэцэг", "Б.Оюун", "А.Одмаа", "Н.Мягмарсүрэн", "Л.Лхамжав", "Г.Гантогоо", "Б.Наранцацрал", "О.Баатарцогт", "Б.Мөнхдэлгэр", "Б.Лхагвадорж", "Ж.Хулан", "Ш.Баярдулам", "Л.Болд", "Ө.Ганбат", "Д.Сарантуяа", "С.Таванжин", "Г.Хишигжаргал", "Ж.Уранчимэг", "Р.Алтанзул", "М.Нандинцэцэг", "А.Бакей", "Х.Баярмаа", "Д.Пүрэвмагнай", "Т.Амарсайхан", "Б.Баярхүү", "И.Доржсүрэн", "Б.Амарсанаа", "Д.Цэвээннамжил", "Я.Алтангэрэл", "П.Уранчимэг", "Ш.Оюунчимэг", "Г.Нямдаваа", "Б.Баасанжалбуу", "Г.Агиймаа", "Б.Хишигбаяр", "Х.Мөнхтуяа", "Н.Дамбадаржаа", "Х.Цэгмид", "Э.Хонгорзул", "Д.Эрдэнэтуяа", "Б.Еркебулан", "Б.Нямдаваа", "Б.Чанцал", "Д.Ганхуяг", "Б.Нарантуяа", "П.Даваадорж", "С.Одончимэг", "Г.Ундрах", "Г.Бямбажаргал", "М.Мартбаяр", "Т.Хишигбуян", "Ц.Нямхүү", "Б.Батчимэг", "Э.Магсаржав", "С.Энэрэл", "М.Уянга", "Б.Баяраа", "Б.Төртулга", "Д.Түвшинбаяр", "Э.Нямбаяр", "Б.Нямгэрэл", "Г.Цэндмаа", "А.Сайнчулуу", "Д.Болор-Эрдэнэ", "Ж.Загас", "Б.Мөнхбаяр", "Б.Мөнхтуул", "С.Цогт", "Т.Чимэдцэрэн", "С.Отгонпүрэв", "Ц.Мөнх-Эрдэнэ", "Г.Гантуяа", "Б.Дуламсүрэн", "Б.Солонго", "Ш.Дэнсмаа", "Г.Нарантуяа", "Х.Ууганбаатар", "Н.Очирхүү", "С.Оюунгэрэл", "Д.Мөнхцэцэг", "Я.Гангантогос", "Н.Сарангарав", "С.Сансаргэрэл", "Ш.Гэрлээ", "П.Содгэрэл", "Б.Дэлгэрмаа", "Б.Урантүлхүүр", "Д.Батдорж", "П.Светлана", "Ц.Ариунаа", "Б.Баасанжаргал", "Д.Тунгалаг", "Б.Баасаннамжий", "Б.Лхамсүрэн", "С.Оюунчимэг", "Т.Оюунчимэг", "Б.Эркигүл", "Д.Цэцэгжаргал", "Б.Үүрийнтуяа", "Г.Отгондэмбэрэл", "Ц.Тунгалаг", "Ш.Жамбалням", "Ц.Пагамжав", "Б.Шошвандан", "Ж.Очир", "Б.Бурмаа", "Р.Чанцалдулам", "Ц.Мөнхтуул", "Б.Бүрэнзаяа", "Д.Даваажав", "Д.Ундармаа", "Т.Алтанзаяа", "С.Цэнд-Аюуш", "Ж.Хонгорзул", "Т.Азбаяр", "Г.Уянга", "Т.Мэндбаяр", "Ч.Болорцэцэг", "А.Булган", "Т.Оюунцэцэг", "П.Мэнд-Амгалан", "Д.Пүрэвсүрэн", "В.Дэлгэрмаа", "Ц.Эрдэнэ-Очир"];
-  var nf=document.getElementById('nfield'), nx=nf.getContext('2d'), NP=[], nq=0;
+  var nf=document.getElementById('nfield'), nx=nf.getContext('2d'), nq=0;
   nf.width=1920; nf.height=1080;
   nx.textAlign='center'; nx.textBaseline='middle';
-  function nseed(p, init){
-    p.txt = NAMES[nq++ % NAMES.length];
-    p.s   = 26 + Math.random()*16;                 // үсгийн хэмжээ
-    nx.font='600 '+p.s.toFixed(1)+'px "Segoe UI",Arial,sans-serif';
-    var half = nx.measureText(p.txt).width/2 + 96; // хүрээнээс халихгүй байх хязгаар
-    var room = Math.max(0, 960-half);
-    p.x   = 960 + (Math.random()*2-1)*room;
-    p.y   = init ? Math.random()*1080 : 1080 + 60 + Math.random()*170;  // давхцахгүй зайтай гарна
-    p.v   = .17 + Math.random()*.15;               // маш удаан хөвнө
-    p.a   = .10 + Math.random()*.05;              // дээд тунгалаг байдал
+
+  /* Дэлгэцийг 3 босоо багана болгон хуваана. Нэг баганын нэрс дараалан
+     дээш хөвөх ба хоорондоо тогтсон зайтай тул ХЭЗЭЭ Ч ДАВХЦАХГҮЙ.
+     Багана бүр өөр хурдтай учир механик мэт харагдахгүй.                */
+  var NCOL=3, COLW=1920/NCOL, COLS=[], SPD=[.95,1.06,.88];
+  function mkName(col, y){
+    var o={ c:col, txt:NAMES[nq++ % NAMES.length], s:28+Math.random()*7,
+            a:.17+Math.random()*.08, y:y };
+    nx.font='600 '+o.s.toFixed(1)+'px "Segoe UI",Arial,sans-serif';
+    var half=nx.measureText(o.txt).width/2,
+        cx=COLW*(col+.5), room=Math.max(0, COLW/2 - half - 22);
+    o.x = cx + (Math.random()*2-1)*room;        // баганынхаа дотор чөлөөтэй
+    return o;
   }
-  for(var q=0;q<11;q++){ var pp={}; nseed(pp,true); NP.push(pp); }
-  (function nloop(){
+  for(var c=0;c<NCOL;c++){                      // эхлэхэд дэлгэцийг дүүргэнэ
+    var arr=[], y=1100 - Math.random()*120;
+    while(y > -110){ arr.push(mkName(c,y)); y -= 170 + Math.random()*90; }
+    COLS.push(arr);
+  }
+  if(!CTRL)(function nloop(){
     nx.clearRect(0,0,1920,1080);
     if(stage.dataset.fx==='names'){
-      for(var k=0;k<NP.length;k++){
-        var p=NP[k]; p.y-=p.v; if(p.y<-70){ nseed(p,false); continue; }
-        var f=Math.min(1,(1080-p.y)/170, (p.y+70)/170);           // орж гарахдаа уусна
-        if(p.y>330 && p.y<770) f*=.38;                            // голын бичиг халхлахгүй
-        nx.font='600 '+p.s.toFixed(1)+'px "Segoe UI",Arial,sans-serif';
-        nx.fillStyle='rgba(223,240,228,'+(p.a*f).toFixed(3)+')';
-        nx.fillText(p.txt, p.x, p.y);
+      for(var c=0;c<NCOL;c++){
+        var L=COLS[c], low=-1e9;
+        for(var k=L.length-1;k>=0;k--){
+          var o=L[k]; o.y -= SPD[c];
+          if(o.y < -110){ L.splice(k,1); continue; }
+          if(o.y > low) low = o.y;
+          var f=Math.min(1, (1080-o.y)/150, (o.y+110)/150);   // орж гарахдаа уусна
+          if(o.y>355 && o.y<725) f*=.34;                      // голын бичгийг халхлахгүй
+          nx.font='600 '+o.s.toFixed(1)+'px "Segoe UI",Arial,sans-serif';
+          nx.fillStyle='rgba(226,243,231,'+(o.a*f).toFixed(3)+')';
+          nx.fillText(o.txt, o.x, o.y);
+        }
+        if(low < 1080) L.push(mkName(c, Math.max(low,1080) + 170 + Math.random()*90));
       }
     }
     requestAnimationFrame(nloop);
@@ -947,7 +1045,7 @@ ul.list.big li{font-size:40px}
       vy:-(11.5+Math.random()*3.5), c:COL[(Math.random()*COL.length)|0],
       k:['peony','peony','peony','willow','ring','glit'][(Math.random()*6)|0]});
   }
-  (function fwloop(){
+  if(!CTRL)(function fwloop(){
     var on = stage.dataset.fx==='fw';
     if(on && !wasFw){ nextAt=0; for(var z=0;z<5;z++) rocket(); }   // слайд нээгдэнгүүт салъют
     wasFw=on;
@@ -987,6 +1085,72 @@ ul.list.big li{font-size:40px}
     if(FP.length>2600) FP.splice(0, FP.length-2600);
     requestAnimationFrame(fwloop);
   })();
+
+  onCmd(function(m){
+    if(!m) return;
+    if(CTRL){ if(m.cur!=null) markCtrl(m.cur);
+              if(m.light!=null) setLightLabel(m.light); return; }
+    if(m.go!=null) show(m.go);
+    else if(m.a==='next') next();
+    else if(m.a==='prev') prev();
+    else if(m.a==='down') stepTo(slides[i], (+slides[i].dataset.step||0)+1);
+    else if(m.a==='up')   stepTo(slides[i], (+slides[i].dataset.step||0)-1);
+    else if(m.a==='reveal'){ var sc=slides[i];
+      if(sc.classList.contains('nomslide'))
+        stepTo(sc, sc.querySelector('.nomgrid').children.length + (sc.classList.contains('rev')?0:1)); }
+    else if(m.a==='ident') playIdent();
+    else if(m.a==='light') cycleLight();
+    else if(m.a==='home')  show(0);
+    else if(m.a==='end')   show(slides.length-1);
+    else if(m.a==='menu')  menu(!stage.classList.contains('menu-on'));
+    else if(m.a==='full')  goFull();
+  });
+
+  /* ---- удирдлагын цонхны жагсаалт ---- */
+  var cRows=[];
+  function setLightLabel(v){
+    var b=document.getElementById('cLight'); if(!b) return;
+    b.textContent = '🔆 Гэрэл: ' + (v==='top' ? 'дээрээс' : v==='bottom' ? 'доороос' : 'унтраасан');
+  }
+  function markCtrl(n){
+    cRows.forEach(function(r,k){ r.classList.toggle('now', k===n); });
+    var r=cRows[n]; if(r) r.scrollIntoView({block:'center', behavior:'smooth'});
+  }
+  function buildCtrl(){
+    var w=document.createElement('div'); w.id='cpanel';
+    w.innerHTML='<header><b>ХӨТӨЛБӨРИЙН УДИРДЛАГА</b>'+
+      '<span>Энэ цонх зөвхөн танд харагдана</span></header><div class="clist"></div>'+
+      '<div class="cbar">'+
+        '<button data-a="prev">◀</button>'+
+        '<button data-a="up">↑</button>'+
+        '<button data-a="down">↓ нэр дэвшигч</button>'+
+        '<button data-a="reveal">★ шилдэг</button>'+
+        '<button data-a="next">▶</button>'+
+      '</div>'+
+      '<div class="cbar cbar2">'+
+        '<button data-a="light" id="cLight">🔆 Гэрэл</button>'+
+        '<button data-a="ident">ХААИС лого</button>'+
+        '<button data-a="home">⟲ Эхнээс</button>'+
+        '<button data-a="end">Төгсгөл ⇥</button>'+
+        '<button data-a="menu">☰ Том дэлгэцийн цэс</button>'+
+      '</div>'+
+      '<div class="chint">Бүтэн дэлгэц — <b>том дэлгэцийн цонх</b> дээр <b>F</b> дарна · '+
+      'Слайд руу шууд үсрэх — дугаарыг нь шивнэ</div>';
+    document.body.appendChild(w);
+    var L=w.querySelector('.clist');
+    slides.forEach(function(sl,n){
+      var b=document.createElement('button'); b.className='crow lv'+(sl.dataset.lv||0);
+      b.innerHTML='<i>'+(n+1)+'</i><u>'+(sl.dataset.time||'')+'</u>'+
+                  '<span>'+(sl.dataset.m||sl.dataset.t||'')+'</span>';
+      b.addEventListener('click', function(){ send({go:n}); markCtrl(n); });
+      L.appendChild(b); cRows.push(b);
+    });
+    [].forEach.call(w.querySelectorAll('.cbar button'), function(b){
+      b.addEventListener('click', function(){ send({a:b.dataset.a}); });
+    });
+    markCtrl(0); setLightLabel('top');
+  }
+  if(CTRL) buildCtrl();
 
   show(0);
 })();
