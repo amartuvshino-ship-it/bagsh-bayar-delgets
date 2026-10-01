@@ -370,6 +370,20 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
 #cpanel header b{display:block;font-size:15px;letter-spacing:.22em;color:var(--yellow)}
 #cpanel header span{display:block;font-size:12px;letter-spacing:.1em;margin-top:5px;
   color:rgba(255,248,221,.45)}
+/* слайд бүрийн тусгай товчнууд */
+#cctx{display:flex;flex-wrap:wrap;gap:7px;padding:11px 11px 12px;
+  border-bottom:1px solid rgba(255,221,0,.26);background:rgba(0,46,28,.42)}
+#cctx:empty{display:none}
+#cctx .cx{cursor:pointer;background:rgba(0,66,40,.72);color:var(--cream);
+  border:1px solid rgba(255,221,0,.30);border-radius:9px;
+  padding:10px 13px;font:600 13px/1.25 var(--sans);letter-spacing:.02em}
+#cctx .cx b{color:var(--yellow);font-weight:800}
+#cctx .cx:hover{background:rgba(255,221,0,.17)}
+#cctx .cx.go{border-color:rgba(255,221,0,.75);background:rgba(0,88,52,.9)}
+#cctx .cx.star{border-color:var(--yellow);background:rgba(120,92,0,.55);color:#fff}
+#cctx .cx.dim{opacity:.5}
+#cctx .cxn{flex:0 0 100%;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(191,217,198,.72)}
 #cpanel .clist{flex:1;overflow-y:auto;padding:8px}
 .crow{display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
   background:none;border:0;border-left:3px solid transparent;border-radius:9px;
@@ -837,7 +851,10 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
             '<div class="rm">'+esc(p.t)+'  <i>·  '+esc(p.u)+'</i></div>'+
             '</div></div>';
         });
-        html += '<section class="slide" data-lv="2" data-time="" data-m="'+
+        html += '<section class="slide" data-lv="2" data-time="" '+
+            'data-pg="'+(pg+1)+'" data-pgn="'+pages+'" '+
+            'data-aw="'+esc(g.aw.charAt(0)+g.aw.slice(1).toLowerCase())+'" '+
+            'data-m="'+
             esc(g.aw.charAt(0)+g.aw.slice(1).toLowerCase())+(pages>1?' ('+(pg+1)+'/'+pages+')':'')+'">'+
           '<div class="eyebrow">'+esc(secLabel)+'</div>'+
           '<div class="awname" style="margin-top:14px">'+esc(g.aw)+'</div>'+
@@ -936,6 +953,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     } else {
       reveal(sec, k>n);
     }
+    if(typeof syncCtrl==='function') syncCtrl();
   }
 
   /* ---- нэрийг үсэг үсгээр нь бичих ---- */
@@ -993,6 +1011,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     if(nmEl) typeName(nmEl);
     else [].forEach.call(sec.querySelectorAll('.nm'), unType);
     stage.dataset.fx = on ? 'fw' : (sec.dataset.fx || '');
+    if(typeof syncCtrl==='function') syncCtrl();
   }
 
   /* ---- слайдууд ---- */
@@ -1035,14 +1054,25 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     items.forEach(function(b,n){ b.classList.toggle('now', n===i); });
     if(stage.classList.contains('menu-on')) items[i].scrollIntoView({block:'nearest'});
     if(moved && !CTRL){ playWipe(); if(cur.dataset.ident) playIdent(); }
-    if(!CTRL) send({cur:i, light:stage.dataset.light||''});
+    syncCtrl();
     if(CTRL) markCtrl(i);
+  }
+  /* удирдлагын цонхонд одоогийн төлвийг мэдэгдэх (товчнуудын бичиг өөрчлөгдөнө) */
+  var syncTm=0;
+  function syncCtrl(){
+    if(CTRL) return;
+    clearTimeout(syncTm);
+    syncTm=setTimeout(function(){
+      var c=slides[i];
+      send({cur:i, light:stage.dataset.light||'',
+            st:+(c.dataset.step||0), rev:c.classList.contains('rev')?1:0});
+    }, 50);
   }
   function next(){ show(i+1); } function prev(){ show(i-1); }
   function cycleLight(){
     var L=stage.dataset.light||'';
     stage.dataset.light = L==='' ? 'top' : (L==='top' ? 'bottom' : '');
-    send({cur:i, light:stage.dataset.light});
+    syncCtrl();
   }
   function goFull(){ var d=document.documentElement;
     if(document.fullscreenElement) document.exitFullscreen();
@@ -1251,7 +1281,10 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
 
   onCmd(function(m){
     if(!m) return;
-    if(CTRL){ if(m.cur!=null) markCtrl(m.cur);
+    if(CTRL){ if(m.cur!=null){ ctxSt.cur=m.cur; markCtrl(m.cur); }
+              if(m.st!=null)  ctxSt.st=m.st;
+              if(m.rev!=null) ctxSt.rev=m.rev;
+              if(m.cur!=null || m.st!=null || m.rev!=null) ctxBar();
               if(m.light!=null) setLightLabel(m.light); return; }
     if(m.go!=null) show(m.go);
     else if(m.a==='next') next();
@@ -1270,7 +1303,57 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
   });
 
   /* ---- удирдлагын цонхны жагсаалт ---- */
-  var cRows=[];
+  var cRows=[], ctxSt={cur:0, st:0, rev:0};
+
+  /* ---- слайд бүрийн ТУСГАЙ товчнууд (зөвхөн удирдлагын цонхонд) ----
+     Нэр дэвшигчтэй слайд → нэр дэвшигч нэмэх / шилдгийг зарлах
+     Олон хуудастай шагнал → хуудас солих
+     Бүх слайд         → өмнөх / дараагийн слайдын НЭРТЭЙГЭЭР              */
+  function shortM(sl, n){
+    var t=(sl.dataset.m||sl.dataset.t||('Слайд '+(n+1)));
+    return t.length>26 ? t.slice(0,25)+'…' : t;
+  }
+  function ctxBar(){
+    var box=document.getElementById('cctx'); if(!box) return;
+    var n=ctxSt.cur, sl=slides[n]; if(!sl) return;
+    box.innerHTML='';
+    function add(label, act, cls){
+      var b=document.createElement('button');
+      b.className='cx'+(cls?' '+cls:''); b.innerHTML=label;
+      b.addEventListener('click', function(){ send(act); if(act.go!=null){ ctxSt.cur=act.go; markCtrl(act.go); ctxBar(); } });
+      box.appendChild(b); return b;
+    }
+    function note(txt){
+      var s=document.createElement('span'); s.className='cxn'; s.textContent=txt; box.appendChild(s);
+    }
+
+    /* 1. нэр дэвшигчтэй слайд */
+    var grid=sl.querySelector('.nomgrid');
+    if(grid){
+      var nn=grid.children.length, st=Math.min(ctxSt.st, nn);
+      if(!ctxSt.rev){
+        add('↓ Нэр дэвшигч гаргах <b>'+st+' / '+nn+'</b>', {a:'down'}, st<nn?'go':'');
+        if(st>0) add('↑ Нэгийг буцаах', {a:'up'});
+        add('★ ШИЛДГИЙГ ЗАРЛАХ', {a:'reveal'}, st>=nn?'star':'dim');
+      } else {
+        note('Шилдэг зарлагдсан');
+        add('↺ Нэр дэвшигчид рүү буцаах', {a:'reveal'});
+      }
+    }
+
+    /* 2. олон хуудастай шагналын жагсаалт */
+    var pn=+(sl.dataset.pgn||1), pg=+(sl.dataset.pg||1), used={};
+    if(pn>1){
+      note(sl.dataset.aw+' — хуудас '+pg+' / '+pn);
+      if(pg>1) { add('◀ Хуудас '+(pg-1), {go:n-1}); used[n-1]=1; }
+      if(pg<pn){ add('Хуудас '+(pg+1)+' ▶', {go:n+1}, 'go'); used[n+1]=1; }
+    }
+
+    /* 3. бүх слайд — өмнөх / дараагийн слайд нэрээрээ */
+    if(n>0 && !used[n-1]) add('◀ '+shortM(slides[n-1], n-1), {go:n-1});
+    if(n<slides.length-1 && !used[n+1])
+      add(shortM(slides[n+1], n+1)+' ▶', {go:n+1}, 'go');
+  }
   function setLightLabel(v){
     var b=document.getElementById('cLight'); if(!b) return;
     b.textContent = '🔆 Гэрэл: ' + (v==='top' ? 'дээрээс' : v==='bottom' ? 'доороос' : 'унтраасан');
@@ -1282,7 +1365,8 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
   function buildCtrl(){
     var w=document.createElement('div'); w.id='cpanel';
     w.innerHTML='<header><b>ХӨТӨЛБӨРИЙН УДИРДЛАГА</b>'+
-      '<span>Энэ цонх зөвхөн танд харагдана</span></header><div class="clist"></div>'+
+      '<span>Энэ цонх зөвхөн танд харагдана</span></header>'+
+      '<div id="cctx"></div><div class="clist"></div>'+
       '<div class="cbar">'+
         '<button data-a="prev">◀</button>'+
         '<button data-a="up">↑</button>'+
@@ -1311,7 +1395,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     [].forEach.call(w.querySelectorAll('.cbar button'), function(b){
       b.addEventListener('click', function(){ send({a:b.dataset.a}); });
     });
-    markCtrl(0); setLightLabel('top');
+    markCtrl(0); setLightLabel('top'); ctxBar();
   }
   if(CTRL) buildCtrl();
 
