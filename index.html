@@ -201,7 +201,7 @@ ul.list.big li{font-size:40px}
 .rcpt.tight .rm{font-size:17.5px;margin-top:3px}
 .rcpt.tight{row-gap:15px;column-gap:52px}
 .awname{font-family:var(--serif);font-size:54px;font-weight:700;letter-spacing:.05em;
-  color:var(--yellow);line-height:1.14;max-width:1680px;
+  color:var(--yellow);line-height:1.14;max-width:1700px;white-space:nowrap;
   text-shadow:0 0 34px rgba(255,221,0,.22)}
 .awcnt{font-size:20px;letter-spacing:.24em;color:var(--sage);margin-top:12px}
 /* «ГАРДУУЛАХ ЁСЛОЛ» — сүрлэг тэргүүн мөр */
@@ -835,6 +835,17 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
       ] }
   ];
 
+  /* шагналын нэрийг урт нь даахын хэрээр томоор — дэлгэц дүүрэн, нэг мөрөнд */
+  var awCv=document.createElement('canvas').getContext('2d');
+  function awSize(t){
+    t=String(t||''); if(!t) return 60;
+    var MAX=1640, hi=96, lo=40;
+    for(var s=hi; s>lo; s-=2){
+      awCv.font='700 '+s+'px Georgia,"Times New Roman",serif';
+      if(awCv.measureText(t).width + t.length*0.05*s <= MAX) return s;   // .05em зай нэмж тооцов
+    }
+    return lo;
+  }
   function stateSlides(list, anchorId, secLabel){
     var anc=document.getElementById(anchorId); if(!anc) return;
     var html='';
@@ -860,7 +871,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
             'data-m="'+
             esc(g.aw.charAt(0)+g.aw.slice(1).toLowerCase())+(pages>1?' ('+(pg+1)+'/'+pages+')':'')+'">'+
           '<div class="eyebrow">'+esc(secLabel)+'</div>'+
-          '<div class="awname" style="margin-top:14px">'+esc(g.aw)+'</div>'+
+          '<div class="awname" style="margin-top:14px;font-size:'+awSize(g.aw)+'px">'+esc(g.aw)+'</div>'+
           '<img class="orn sm" src="'+ORN_SRC+'" alt="" style="margin-top:14px">'+
           '<div class="'+cls+'" style="margin-top:26px">'+rowsHtml+'</div>'+
           (pages>1 ? '<div class="awcnt">'+(pg+1)+' / '+pages+'</div>' : '')+
