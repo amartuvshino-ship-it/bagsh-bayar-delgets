@@ -138,6 +138,7 @@ h1{font-family:var(--serif);font-weight:700;line-height:1.1;letter-spacing:.03em
   filter:drop-shadow(0 6px 22px rgba(0,0,0,.45))}
 h1.mid{font-size:86px}
 h1.small{font-size:66px}
+h1.nomh{font-size:60px;white-space:nowrap}   /* «ОНЫ ШИЛДЭГ …» нэг мөрөнд */
 h1.huge{font-size:150px;line-height:1.08}
 h1.aw{font-size:104px}
 h1.aw2{font-size:82px}
@@ -182,24 +183,31 @@ ul.list.big li{font-size:40px}
 /* ---------- шагнал хүртэгчдийн жагсаалт (төрийн одон / яамны шагнал) ---------- */
 .rcpt{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;row-gap:20px;
   width:100%;max-width:1680px;text-align:left;align-items:start}
-.rcpt.one{grid-template-columns:minmax(0,1280px);justify-content:center;row-gap:40px}
+.rcpt.one{grid-template-columns:minmax(0,1560px);justify-content:center;row-gap:34px}
 .rcpt.one .r{grid-template-columns:1fr;text-align:center}
 .rcpt.one .k{display:none}
+.rcpt.one .rn{font-size:44px}
+.rcpt.one .rm{font-size:23px;margin-top:6px}
 .rcpt .r{display:grid;grid-template-columns:52px 1fr;column-gap:16px;align-items:baseline}
 .rcpt .k{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--gold-deep);
   text-align:right;font-variant-numeric:tabular-nums;line-height:1.25}
 .rcpt .rn{font-size:33px;font-weight:800;color:#fff;letter-spacing:.012em;line-height:1.2}
 .rcpt .rm{font-size:19px;color:rgba(255,229,107,.88);margin-top:4px;line-height:1.3}
 .rcpt .rm i{font-style:normal;color:rgba(221,238,226,.62)}
-.rcpt.big .rn{font-size:48px}
-.rcpt.big .rm{font-size:25px;margin-top:7px}
+.rcpt.big .rn{font-size:56px}
+.rcpt.big .rm{font-size:27px;margin-top:8px}
 .rcpt.big .k{font-size:38px}
 .rcpt.tight .rn{font-size:29px}
 .rcpt.tight .rm{font-size:17.5px;margin-top:3px}
 .rcpt.tight{row-gap:15px;column-gap:52px}
-.awname{font-family:var(--serif);font-size:30px;font-weight:700;letter-spacing:.06em;
-  color:var(--yellow);line-height:1.2}
-.awcnt{font-size:20px;letter-spacing:.24em;color:var(--sage);margin-top:10px}
+.awname{font-family:var(--serif);font-size:54px;font-weight:700;letter-spacing:.05em;
+  color:var(--yellow);line-height:1.14;max-width:1680px;
+  text-shadow:0 0 34px rgba(255,221,0,.22)}
+.awcnt{font-size:20px;letter-spacing:.24em;color:var(--sage);margin-top:12px}
+/* «ГАРДУУЛАХ ЁСЛОЛ» — сүрлэг тэргүүн мөр */
+.cer{font-family:var(--serif);font-size:52px;font-weight:700;letter-spacing:.20em;
+  padding-left:.20em;color:var(--sage);line-height:1.1;
+  text-shadow:0 0 40px rgba(191,217,198,.22)}
 
 /* шагналын слайд */
 .award{display:grid;justify-items:center;gap:26px}
@@ -440,9 +448,9 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
 
   <!-- ============ 2. ХӨТӨЛБӨР — 1 ХЭСЭГ ============ -->
   <section class="slide" data-time="" data-m="Хөтөлбөр · 1 хэсэг" data-lv="0">
-    <div class="eyebrow">2026 ОНЫ 10 ДУГААР САРЫН 02 · ЗАЙСАН ХИЛЛ</div>
-    <h1 class="mid" style="margin-top:14px">ӨДӨРЛӨГ</h1>
-    <div class="eyebrow" style="margin-top:16px;font-size:20px;color:var(--gold)">ҮЙЛ АЖИЛЛАГАА — 1 ДҮГЭЭР ХЭСЭГ</div>
+    <div class="eyebrow">ХААИС · 2026.10.02</div>
+    <h1 class="mid" style="margin-top:14px">ХӨТӨЛБӨР</h1>
+    <div class="eyebrow" style="margin-top:16px;font-size:20px;color:var(--gold)">ЁСЛОЛ ХҮНДЭТГЭЛИЙН ҮЙЛ АЖИЛЛАГАА — 1 ДҮГЭЭР ХЭСЭГ</div>
     <img class="orn sm" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:14px">
     <div class="prog" style="margin-top:28px">
       <div class="t">16:30</div><div class="w dim">Зочдыг угтах, суудлаа эзлэх</div>
@@ -458,9 +466,9 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
 
   <!-- ============ 3. ХӨТӨЛБӨР — 2 ХЭСЭГ ============ -->
   <section class="slide" data-time="" data-m="Хөтөлбөр · 2 хэсэг" data-lv="0">
-    <div class="eyebrow">2026 ОНЫ 10 ДУГААР САРЫН 02 · ЗАЙСАН ХИЛЛ</div>
-    <h1 class="mid" style="margin-top:14px">ӨДӨРЛӨГ</h1>
-    <div class="eyebrow" style="margin-top:16px;font-size:20px;color:var(--gold)">ҮЙЛ АЖИЛЛАГАА — 2 ДУГААР ХЭСЭГ</div>
+    <div class="eyebrow">ХААИС · 2026.10.02</div>
+    <h1 class="mid" style="margin-top:14px">ХӨТӨЛБӨР</h1>
+    <div class="eyebrow" style="margin-top:16px;font-size:20px;color:var(--gold)">ЁСЛОЛ ХҮНДЭТГЭЛИЙН ҮЙЛ АЖИЛЛАГАА — 2 ДУГААР ХЭСЭГ</div>
     <img class="orn sm" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:14px">
     <div class="prog" style="margin-top:28px">
       <div class="t">19:25</div><div class="w">Урлагийн тоглолт</div>
@@ -496,7 +504,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
   <section class="slide" data-time="17:10" data-m="Урлагийн тоглолт · Ө.Уянга" data-lv="0">
     <h1 class="mid">УРЛАГИЙН ТОГЛОЛТ</h1>
     <img class="orn sm" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:22px">
-    <p class="by" style="margin-top:26px">Монгол Улсын гавьяат жүжигчин<br><b>Ө.УЯНГА</b></p>
+    <p class="by" style="margin-top:26px">Монгол Улсын Гавьяат жүжигчин<br><b>Ө.УЯНГА</b></p>
   </section>
 
   <!-- ============ 8. ХҮНДЭТГЭЛИЙН ЗООГ ============ -->
@@ -509,12 +517,12 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
   <section class="slide" data-time="17:45" data-m="Төрийн шагнал гардуулах" data-lv="0" data-ident="1">
     <h1 class="aw2">ТӨРИЙН ОДОН, МЕДАЛЬ, САЛБАРЫН<br>ЯАМНЫ ШАГНАЛ ГАРДУУЛАХ ЁСЛОЛ</h1>
     <img class="orn sm" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:22px">
-    <p class="by" style="margin-top:24px">Хөтлөгч — Монгол Улсын гавьяат жүжигчин <b>Г.АМГАЛАНБААТАР</b></p>
+    <p class="by" style="margin-top:24px">Хөтлөгч — Монгол Улсын Гавьяат жүжигчин <b>Г.АМГАЛАНБААТАР</b></p>
   </section>
 
   <!-- ============ 10. ТӨРИЙН ОДОН, МЕДАЛЬ ============ -->
   <section class="slide" data-time="" data-m="Төрийн одон, медаль" data-lv="1">
-    <div class="eyebrow" style="font-size:27px">ГАРДУУЛАХ ЁСЛОЛ</div>
+    <div class="cer">ГАРДУУЛАХ ЁСЛОЛ</div>
     <h1 class="aw" style="margin-top:34px">ТӨРИЙН ОДОН, МЕДАЛЬ</h1>
     <img class="orn" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:30px">
   </section>
@@ -522,7 +530,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
 
   <!-- ============ 11. САЛБАРЫН ЯАМНЫ ШАГНАЛ ============ -->
   <section class="slide" data-time="" data-m="Салбарын яамны шагнал" data-lv="1">
-    <div class="eyebrow" style="font-size:27px">ГАРДУУЛАХ ЁСЛОЛ</div>
+    <div class="cer">ГАРДУУЛАХ ЁСЛОЛ</div>
     <h1 class="aw" style="margin-top:34px">САЛБАРЫН ЯАМНЫ ШАГНАЛ</h1>
     <img class="orn" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:30px">
   </section>
@@ -530,7 +538,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
 
   <!-- ============ 12. ҮЙЛДВЭРЧНИЙ ЭВЛЭЛИЙН ШАГНАЛ ============ -->
   <section class="slide" data-time="" data-m="Үйлдвэрчний эвлэлийн шагнал" data-lv="1">
-    <div class="eyebrow" style="font-size:27px">ГАРДУУЛАХ ЁСЛОЛ</div>
+    <div class="cer">ГАРДУУЛАХ ЁСЛОЛ</div>
     <h1 class="aw2" style="margin-top:34px">ҮЙЛДВЭРЧНИЙ ЭВЛЭЛИЙН ШАГНАЛ</h1>
     <img class="orn" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:30px">
   </section>
@@ -539,7 +547,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
   <section class="slide" data-time="18:25" data-m="Урлагийн тоглолт · С.Баттулга" data-lv="0">
     <h1 class="mid">УРЛАГИЙН ТОГЛОЛТ</h1>
     <img class="orn sm" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:22px">
-    <p class="by" style="margin-top:26px">Монгол Улсын урлагийн гавьяат зүтгэлтэн<br><b>С.БАТТУЛГА</b></p>
+    <p class="by" style="margin-top:26px">Монгол Улсын урлагийн Гавьяат зүтгэлтэн<br><b>С.БАТТУЛГА</b></p>
   </section>
 
   <!-- ============ 14. ОНЫ ШИЛДЭГҮҮД — ЁСЛОЛ ============ -->
@@ -556,10 +564,10 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
   <section class="slide" data-time="19:15" data-m="Тоглолт · Хүндэтгэлийн зоог" data-lv="0">
     <h1 class="small">УРЛАГИЙН ТОГЛОЛТ<br>ХҮНДЭТГЭЛИЙН ЗООГ</h1>
     <img class="orn sm" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjE5IDE3LjUgMzgwIDI4LjUiPgogIDwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAzMC4zLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiAyLjEuMyBCdWlsZCAxODIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgICBzdHJva2U6ICNGRkREMDA7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxLjU0cHg7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNGRkREMDA7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjQuNSwzMS40N2M2LjI2LTEuNyw4LjMtNC4zNCwxMS45NC00LjM0LDMuOTksMCw0LjY3LDQuMzQsNC42Nyw0LjM0aC0xNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIyNC41LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogICAgPC9nPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTMuNiwzMS40N2MtNi4yNi0xLjctOC4zLTQuMzQtMTEuOTQtNC4zNC0zLjk5LDAtNC42Nyw0LjM0LTQuNjcsNC4zNGgxNi42MVoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTE5My42LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogICAgPC9nPgogIDwvZz4KICA8Zz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0zODAuMDUsMzEuNDdjNi4yNi0xLjcsOC4zLTQuMzQsMTEuOTQtNC4zNCwzLjk5LDAsNC42Nyw0LjM0LDQuNjcsNC4zNGgtMTYuNjFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzgwLjA1LDMxLjQ3YzYuMjYsMS43LDguMyw0LjM0LDExLjk0LDQuMzQsMy45OSwwLDQuNjctNC4zNCw0LjY3LTQuMzRoLTE2LjYxWiIvPgogIDwvZz4KICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk2LjgzLDMxLjQ3aDBjNi43NSwwLDEyLjIyLTUuNDcsMTIuMjItMTIuMjJoMGMwLDYuNzUsNS40NywxMi4yMiwxMi4yMiwxMi4yMmgwYy02Ljc1LDAtMTIuMjIsNS40Ny0xMi4yMiwxMi4yMmgwYzAtNi43NS01LjQ3LTEyLjIyLTEyLjIyLTEyLjIyWiIvPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LTEuNy04LjMtNC4zNC0xMS45NC00LjM0LTMuOTksMC00LjY3LDQuMzQtNC42Nyw0LjM0aDE2LjYxWiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4LjA1LDMxLjQ3Yy02LjI2LDEuNy04LjMsNC4zNC0xMS45NCw0LjM0LTMuOTksMC00LjY3LTQuMzQtNC42Ny00LjM0aDE2LjYxWiIvPgogIDwvZz4KICA8bGluZSBjbGFzcz0ic3QwIiB4MT0iMjkuMjciIHkxPSIzMS40NyIgeDI9IjE3Ni45OSIgeTI9IjMxLjQ3Ii8+CiAgPGxpbmUgY2xhc3M9InN0MCIgeDE9IjI0MS4xMSIgeTE9IjMxLjQ3IiB4Mj0iMzg1LjkiIHkyPSIzMS40NyIvPgo8L3N2Zz4=" alt="" style="margin-top:22px">
-    <p class="by" style="margin-top:24px">Хөтлөгч — Монгол Улсын гавьяат жүжигчин <b>Г.АМГАЛАНБААТАР</b></p>
+    <p class="by" style="margin-top:24px">Хөтлөгч — Монгол Улсын Гавьяат жүжигчин <b>Г.АМГАЛАНБААТАР</b></p>
   </section>
 
-  <!-- ============ ҮЙЛ АЖИЛЛАГАА — 2 ДУГААР ХЭСЭГ ============ -->
+  <!-- ============ ЁСЛОЛ ХҮНДЭТГЭЛИЙН ҮЙЛ АЖИЛЛАГАА — 2 ДУГААР ХЭСЭГ ============ -->
   <section class="slide" data-time="" data-m="2 дугаар хэсэг" data-lv="0" data-ident="1">
     <div class="eyebrow">ХӨДӨӨ АЖ АХУЙН ИХ СУРГУУЛЬ</div>
     <h1 class="huge" style="margin-top:26px">2 ДУГААР ХЭСЭГ</h1>
@@ -694,13 +702,13 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
           ХШУС :'Хэрэглээний шинжлэх ухааны сургууль' };
 
   var AWARDS=[
-    { cat:'ЗАЛУУ БАГШ', m:'Залуу багш', kind:'person', win:2,
+    { cat:'ОНЫ ШИЛДЭГ ЗАЛУУ БАГШ', m:'Оны шилдэг залуу багш', kind:'person', win:2,
       nom:[
         {n:'Ганбат НЯМДОРЖ',      d:'магистр', p:'Цахилгаан хангамж, электроникийн ахлах багш', s:S.ИТС,  img:'Г.Нямдорж'},
         {n:'Гансүх БЯМБАЖАРГАЛ',  d:'магистр', p:'Маркетингийн тэнхимийн багш',                 s:S.ЭЗБС, img:'Г.Бямбажаргал'}
       ] },
 
-    { cat:'СУДЛААЧ БАГШ', m:'Судлаач багш', kind:'person', win:6,
+    { cat:'ОНЫ ШИЛДЭГ СУДЛААЧ БАГШ', m:'Оны шилдэг судлаач багш', kind:'person', win:6,
       nom:[
         {n:'Игорь ХАТАНБААТАР',   d:'доктор, дэд профессор', p:'Дотор өвчин, эм судлалын тэнхимийн дэд профессор',                s:S.МЭС,   img:'Ц.Хатанбаатар'},
         {n:'Дашдорж ДАШМАА',        d:'доктор, дэд профессор', p:'Бүтээгдэхүүн судлал, хяналт үнэлгээний тэнхимийн дэд профессор',  s:S.МААБС, img:'Д.Дашмаа'},
@@ -710,7 +718,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
         {n:'Сүхбаатар ОТГОНПҮРЭВ',    d:'доктор, дэд профессор', p:'Химийн тэнхимийн багш, сургуулийн Эрдэмтэн нарийн бичгийн дарга', s:S.ХШУС,  img:'С.Отгонпүрэв'}
       ] },
 
-    { cat:'СУРГАН ХҮМҮҮЖҮҮЛЭГЧ БАГШ', m:'Сурган хүмүүжүүлэгч багш', kind:'person', win:5,
+    { cat:'ОНЫ ШИЛДЭГ СУРГАН ХҮМҮҮЖҮҮЛЭГЧ БАГШ', m:'Оны шилдэг сурган хүмүүжүүлэгч багш', kind:'person', win:5,
       nom:[
         {n:'Пүрэвдорж НЯМ-ОСОР',      d:'доктор, дэд профессор', p:'Мал эмнэлгийн нийтийн эрүүл мэндийн тэнхимийн эрхлэгч',            s:S.МЭС,   img:'П.Ням-Осор'},
         {n:'Жаргалсайхан РЭНЦЭНХАНД',    d:'доктор',                p:'Мал аж ахуй, технологийн тэнхимийн дэд профессор',                 s:S.МААБС, img:'Ж.Рэнцэнханд'},
@@ -720,7 +728,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
         {n:'Товуу АЛТАНЗАЯА',     d:'доктор, дэд профессор', p:'Биологи, аялал жуулчлалын тэнхимийн профессор',                    s:S.ХШУС,  img:'Т.Алтанзаяа'}
       ] },
 
-    { cat:'ТЭНХИМ', m:'Тэнхим', kind:'unit', win:2,
+    { cat:'ОНЫ ШИЛДЭГ ТЭНХИМ', m:'Оны шилдэг тэнхим', kind:'unit', win:2,
       nom:[
         {n:'Мал эмнэлгийн нийтийн эрүүл мэндийн тэнхим',  d:'', p:'', s:S.МЭС,   img:''},
         {n:'Бэлчээр тэжээллэгийн тэнхим',                 d:'', p:'', s:S.МААБС, img:''},
@@ -752,7 +760,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
         {n:"Жигжид БАТ-ЭРДЭНЭ",t:"Зөвлөх профессор",u:"АЭС · Таримал судлал, ой, ландшафт архитектурын тэнхим"}
       ] },
 
-    { aw:"АЛТАНГАДАС", r:[
+    { aw:"АЛТАН ГАДАС ОДОН", r:[
         {n:"Лхазал ОТГОНЖАРГАЛ",t:"Дэд профессор",u:"ЭЗБС · Маркетингийн тэнхим"},
         {n:"Батжаргал БУЯНЗАЯА",t:"Номын сангийн эрхлэгч",u:"Номын сан"},
         {n:"Балгансүрэн ОТГОНХУЯГ",t:"Ахлах багш",u:"ИТС · Хөдөө аж ахуй, хүнсний инженерчлэлийн тэнхим"}
@@ -769,7 +777,6 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     { aw:"БОЛОВСРОЛЫН ТЭРГҮҮНИЙ АЖИЛТАН", r:[
         {n:"Дэндэв БАТЦЭЦЭГ",t:"Багш",u:"Дархан-Уул салбар сургууль"},
         {n:"Баяраа БУРМАА",t:"Оюутны асуудал хариуцсан мэргэжилтэн",u:"Дархан-Уул салбар сургууль"},
-        {n:"Гомбодорж БУМАНЖАРГАЛ",t:"Дэд профессор",u:"ЭЗБС · Статистик, Эконометрикийн тэнхим"},
         {n:"Баянжаргал ОЮУНБИЛЭГ",t:"Дадлагажигч багш",u:"ХШУС · Бие бялдар хүмүүжлийн тэнхим"},
         {n:"Энхболд МОЛОР-ЭРДЭНЭ",t:"Багш",u:"ХШУС · Хэл соёлын тэнхим"},
         {n:"Батхуяг ЭРДЭНЭБАТ",t:"Багш",u:"ХШУС · Физик, Математикийн тэнхим"},
@@ -823,8 +830,8 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
       ] },
 
     { aw:"БОЛОВСРОЛЫН ЯАМНЫ ЖУУХ БИЧИГ", r:[
-        {n:"Мянган ОРГИЛБОЛД",t:"Дэд профессор",u:"АЭС · Экологийн тэнхим"},
-        {n:"Сайполда АЛДАНЫШ",t:"Сургалтын туслах ажилтан",u:"ЭЗБС"}
+        {n:"Сайполда АЛДАНЫШ",t:"Сургалтын туслах ажилтан",u:"ЭЗБС"},
+        {n:"Мянган ОРГИЛБОЛД",t:"Дэд профессор",u:"АЭС · Экологийн тэнхим"}
       ] }
   ];
 
@@ -832,13 +839,13 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     var anc=document.getElementById(anchorId); if(!anc) return;
     var html='';
     list.forEach(function(g){
-      var per = g.r.length<=2 ? 2 : (g.r.length<=8 ? 8 : 14);   // слайд дэх хамгийн их тоо
+      var per = 5;                 // нэг слайдад хамгийн ихдээ 5 хүн — нэр нь томоор уншигдана
       var pages=Math.ceil(g.r.length/per), k=0;
       for(var pg=0; pg<pages; pg++){
         var chunk=g.r.slice(pg*per, (pg+1)*per),
-            cls = chunk.length<=2 ? 'rcpt one big'            // 1–2 хүн — голлон, томоор
-                : chunk.length<=3 ? 'rcpt one'                // 3 хүн — голлон, нэг баганаар
-                : chunk.length<=8 ? 'rcpt' : 'rcpt tight',
+            cls = chunk.length<=2 ? 'rcpt one big'   // 1–2 хүн — хамгийн томоор
+                : 'rcpt one',                        // 3–5 хүн — голлон, нэг баганаар
+
             rowsHtml='';
         chunk.forEach(function(p){
           k++;
@@ -919,7 +926,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
       html += '<section class="slide nomslide" data-m="'+esc(a.m)+'" data-lv="1" data-time="" '+
                 'data-win="'+(a.win||1)+'">'+
         '<div class="eyebrow">НЭР ДЭВШИГЧИД</div>'+
-        '<h1 class="small" style="margin-top:12px">'+esc(a.cat)+'</h1>'+
+        '<h1 class="small nomh" style="margin-top:10px">'+esc(a.cat)+'</h1>'+
         '<div class="nomgrid '+(a.nom.length<=2?'n2':'n3')+'" style="margin-top:16px">'+cards+'</div>'+
         '</section>';
     });
@@ -1002,7 +1009,7 @@ body.ctrl #cpanel{display:flex;flex-direction:column;height:100vh;
     for(var k=0;k<cards.length;k++) cards[k].classList.toggle('winner', on && k===wi);
     grid.classList.toggle('revealed', on);
     sec.classList.toggle('rev', on);
-    eye.textContent = on ? 'ОНЫ ШИЛДЭГ' : 'НЭР ДЭВШИГЧИД';
+    eye.textContent = on ? 'ШАЛГАРСАН' : 'НЭР ДЭВШИГЧИД';
     var nmEl = on ? sec.querySelector('.card.winner .nm') : null;
     if(nmEl) typeName(nmEl);
     else [].forEach.call(sec.querySelectorAll('.nm'), unType);
